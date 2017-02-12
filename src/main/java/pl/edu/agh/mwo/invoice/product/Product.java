@@ -16,7 +16,7 @@ public abstract class Product {
 		}
 		else{ this.name = name; }
 		
-		if(price==null || 	price.compareTo(new BigDecimal("0"))==-1 ){
+		if(price==null || price.compareTo(new BigDecimal("0"))==-1 ){
 			throw new IllegalArgumentException();
 		}
 		else{ this.price = price; }
