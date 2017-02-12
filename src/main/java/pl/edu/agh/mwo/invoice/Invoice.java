@@ -1,27 +1,62 @@
 package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
+	
+	private BigDecimal subtotal;
+	private BigDecimal tax;
+	private BigDecimal total;
+	private HashMap<Product, Integer> productMap;
+	
+	public Invoice(){
+		
+		this.subtotal =BigDecimal.ZERO;
+		this.tax =BigDecimal.ZERO;
+		this.total =BigDecimal.ZERO;
+		this.productMap = new HashMap<Product, Integer>();
+	}
+	
 	public void addProduct(Product product) {
-		// TODO: implement
+		productMap.put(product, 1);
 	}
 
 	public void addProduct(Product product, Integer quantity) {
-		// TODO: implement
+		productMap.put(product, quantity);
 	}
 
 	public BigDecimal getSubtotal() {
-		return null;
+		for (HashMap.Entry<Product, Integer> entry : productMap.entrySet())
+		{
+			subtotal = subtotal
+					.add(entry.getKey().getPrice())
+					.multiply(new BigDecimal(entry.getValue()));
+		}
+		return subtotal;
 	}
 
 	public BigDecimal getTax() {
-		return null;
+		for (HashMap.Entry<Product, Integer> entry : productMap.entrySet())
+		{
+			tax = tax
+					.add(entry.getKey().getPrice()
+					.multiply(entry.getKey().getTaxPercent())
+					.multiply(new BigDecimal(entry.getValue())));
+			
+		}
+		return tax;
 	}
 
 	public BigDecimal getTotal() {
-		return null;
+		for (HashMap.Entry<Product, Integer> entry : productMap.entrySet())
+		{
+			total = total
+					.add(entry.getKey().getPriceWithTax())
+					.multiply(new BigDecimal(entry.getValue()));
+		}
+		return total;
 	}
 }
