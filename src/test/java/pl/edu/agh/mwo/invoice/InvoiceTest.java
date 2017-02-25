@@ -3,6 +3,8 @@ package pl.edu.agh.mwo.invoice;
 import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
@@ -105,6 +107,51 @@ public class InvoiceTest {
 		Invoice invoice = createEmptyInvoice();
 		Assert.assertThat(invoice.getInvoiceNumber(),Matchers.greaterThan(0));
 	}
+	
+	@Test
+	public void testTwoInvoicesHasDifferentNumber(){
+		Invoice invoice = createEmptyInvoice();
+		Invoice invoice2 = createEmptyInvoice();
+		Assert.assertNotEquals(invoice.getInvoiceNumber(),invoice2.getInvoiceNumber());
+	}
+	
+	@Test
+	public void testInvoicesHaveDifferentNumber(){
+		Set<Integer> existingIds = new HashSet<Integer>(); 
+		for(int i = 0; i<1000; i++){
+			Invoice invoice = createEmptyInvoice();
+			Assert.assertFalse(existingIds.contains(invoice.getInvoiceNumber()));
+			existingIds.add(invoice.getInvoiceNumber());
+		}
+	}
+	
+	@Test
+	public void testPrintedInvoiceNumber(){
+		Invoice invoice = createEmptyInvoice();
+		int number = invoice.getInvoiceNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	
+	@Test
+	public void testPrintedInvoiceHasProductName(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")));
+		int number = invoice.getInvoiceNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	
+	@Test
+	public void testPrintedInvoiceHasProductQuantity(){
+		Invoice invoice = createEmptyInvoice();
+		invoice.addProduct(new DairyProduct("Mleko", new BigDecimal("100")), 1827);
+		int number = invoice.getInvoiceNumber();
+		String printedInvoice = invoice.printedVersion();
+		Assert.assertThat(printedInvoice,  Matchers.containsString(String.valueOf(number)));
+	}
+	
+	
 	
 	private Invoice createEmptyInvoice() {
 		return new Invoice();

@@ -8,7 +8,7 @@ import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
 	private Map<Product, Integer> products = new HashMap<Product, Integer>();
-	static int No = 0;
+	private static int No = 0;
 	private int invoiceNumber = 0;
 
 	public Invoice(){
@@ -17,14 +17,21 @@ public class Invoice {
 	}
 	
 	public void addProduct(Product product) {
+		
 		addProduct(product, 1);
 	}
 
 	public void addProduct(Product product, Integer quantity) {
+
 		if (product == null || quantity <= 0) {
 			throw new IllegalArgumentException();
 		}
-		products.put(product, quantity);
+		if(products.containsKey(product.getName())){
+		
+		}
+		else{
+			products.put(product, quantity);
+		}
 	}
 
 	public BigDecimal getNetTotal() {
@@ -51,6 +58,24 @@ public class Invoice {
 	
 	public int getInvoiceNumber(){
 		return this.invoiceNumber;
+	}
+	
+	public String prePrint(){
+		String txt = "";
+		
+		return txt;
+	}
+
+
+	public String printedVersion() {
+		String printed = String.valueOf(invoiceNumber);
+		for(Product product : products.keySet()){
+			printed += "\n" + product.getName(); 
+			printed += ", " + product.getClass().getName();
+			printed += ", " + products.get(product);
+		}
+		printed += "\n" + "Liczba produktów: " + products.size();
+		return printed;
 	}
 	
 }
