@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.math.BigDecimal;
 
+import org.hamcrest.Matchers;
+import org.junit.Assert;
 import org.junit.Test;
 
-import junit.framework.Assert;
 import pl.edu.agh.mwo.invoice.product.DairyProduct;
 import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
@@ -102,8 +103,7 @@ public class InvoiceTest {
 	@Test
 	public void testInvoiceNumberGreaterThanZero(){
 		Invoice invoice = createEmptyInvoice();
-		Assert.assertTrue(invoice.getInvoiceNumber() > 0);
-		
+		Assert.assertThat(invoice.getInvoiceNumber(),Matchers.greaterThan(0));
 	}
 	
 	private Invoice createEmptyInvoice() {
