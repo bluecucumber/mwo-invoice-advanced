@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import pl.edu.agh.mwo.invoice.Invoice;
+import junit.framework.Assert;
 import pl.edu.agh.mwo.invoice.product.DairyProduct;
 import pl.edu.agh.mwo.invoice.product.OtherProduct;
 import pl.edu.agh.mwo.invoice.product.Product;
@@ -98,7 +98,14 @@ public class InvoiceTest {
 		Invoice invoice = createEmptyInvoice();
 		invoice.addProduct(createTaxFreeProduct(), -1);
 	}
-
+	
+	@Test
+	public void testInvoiceNumberGreaterThanZero(){
+		Invoice invoice = createEmptyInvoice();
+		Assert.assertTrue(invoice.getInvoiceNumber() > 0);
+		
+	}
+	
 	private Invoice createEmptyInvoice() {
 		return new Invoice();
 	}
